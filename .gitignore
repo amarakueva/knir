@@ -13,7 +13,6 @@ venv/
 .idea/
 
 .env
-.env.*
 
 logs/
 *.log
@@ -22,3 +21,4 @@ data/
 archive/
 postgres_data/
 grafana_data/
+config/simple_auth_manager_passwords.json

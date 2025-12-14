@@ -58,17 +58,6 @@ services:
     networks:
       - analytics_net
 
-  # redis:
-  #   image: redis:7-alpine
-  #   restart: unless-stopped
-  #   healthcheck:
-  #     test: ["CMD", "redis-cli", "ping"]
-  #     interval: 10s
-  #     timeout: 5s
-  #     retries: 5
-  #   networks:
-  #     - analytics_net
-
   airflow-init:
     <<: *airflow-common
     entrypoint: /bin/bash
@@ -102,16 +91,6 @@ services:
       airflow-init:
         condition: service_completed_successfully
 
-  # airflow-worker:
-  #   <<: *airflow-common
-  #   command: standalone worker
-  #   restart: unless-stopped
-  #   depends_on:
-  #     postgres:
-  #       condition: service_healthy
-  #     airflow-init:
-  #       condition: service_completed_successfully
-
   airflow-dag-processor:
     <<: *airflow-common
     command: dag-processor
@@ -121,13 +100,6 @@ services:
         condition: service_healthy
       airflow-init:
         condition: service_completed_successfully
-
-  # airflow-flower:
-  #   <<: *airflow-common
-  #   command: celery flower
-  #   ports:
-  #     - "5555:5555"
-  #   restart: unless-stopped
 
   grafana:
     image: grafana/grafana:11.2.2
