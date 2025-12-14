@@ -1,0 +1,19 @@
+apiVersion: 1
+
+## Datasource provisioning for Grafana: connects to the dm schema in retail Postgres
+## Environment variables are provided through docker-compose.
+datasources:
+  - name: Retail Postgres
+    uid: retail-postgres
+    type: postgres
+    access: proxy
+    isDefault: true
+    url: ${RETAIL_PG_HOST}:5432
+    user: ${RETAIL_PG_USER}
+    secureJsonData:
+      password: ${RETAIL_PG_PASSWORD}
+    jsonData:
+      database: ${RETAIL_PG_DB}
+      sslmode: disable
+      postgresVersion: 1600
+      timescaledb: false

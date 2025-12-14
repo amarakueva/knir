@@ -1,0 +1,1051 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "grafana"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 4,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "default": true,
+        "type": "grafana-postgresql-datasource",
+        "uid": "retail-postgres"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 15,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "retail-postgres"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  $__time(date_key),\n  event_type AS metric,\n  SUM(total_events) AS total_events\nFROM dm.fact_daily_events\nWHERE $__timeFilter(date_key)\n  AND event_type ~ '${event_type:regex}'\nGROUP BY date_key, event_type\nORDER BY date_key, event_type;",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "События по дням",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "default": true,
+        "type": "grafana-postgresql-datasource",
+        "uid": "retail-postgres"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "retail-postgres"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  $__time(date_key),\n  event_type AS metric,\n  SUM(unique_visitors) AS visitors\nFROM dm.fact_daily_events\nWHERE $__timeFilter(date_key)\n  AND event_type ~ 'view'\nGROUP BY date_key, event_type\nORDER BY date_key, event_type;\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Уникальные посетители",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "retail-postgres"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 0
+      },
+      "id": 3,
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "format": "table",
+          "rawSql": "SELECT\n  event_type AS metric,\n  SUM(total_events) AS value\nFROM dm.fact_daily_events\nWHERE $__timeFilter(date_key)\n  AND event_type ~ '${event_type:regex}'\nGROUP BY event_type\nORDER BY value DESC;",
+          "refId": "A"
+        }
+      ],
+      "title": "Распределение типов событий",
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "retail-postgres"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 0,
+        "y": 8
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.2.2",
+      "targets": [
+        {
+          "format": "table",
+          "rawSql": "SET max_parallel_workers_per_gather = 0;\nWITH filtered AS (\n  SELECT fid.date_key, fid.views, di.parent_category_id\n  FROM dm.fact_item_daily fid\n  LEFT JOIN dm.dim_item di ON di.item_id = fid.item_id\n  WHERE $__timeFilter(fid.date_key)\n    AND COALESCE(di.parent_category_id::text, 'UNCATEGORIZED') ~ '${parent_category:regex}'\n)\nSELECT\n  MAX(filtered.date_key)::timestamp AS \"time\",\n  SUM(filtered.views) AS value\nFROM filtered;\n",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Просмотры",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "retail-postgres"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 6,
+        "y": 8
+      },
+      "id": 5,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.2.2",
+      "targets": [
+        {
+          "format": "table",
+          "rawSql": "SET max_parallel_workers_per_gather = 0;\nWITH filtered AS (\n  SELECT fid.date_key, fid.add_to_cart, di.parent_category_id\n  FROM dm.fact_item_daily fid\n  LEFT JOIN dm.dim_item di ON di.item_id = fid.item_id\n  WHERE $__timeFilter(fid.date_key)\n    AND COALESCE(di.parent_category_id::text, 'UNCATEGORIZED') ~ '${parent_category:regex}'\n)\nSELECT\n  MAX(filtered.date_key)::timestamp AS \"time\",\n  SUM(filtered.add_to_cart) AS value\nFROM filtered;\n",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Добавления в корзину",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "retail-postgres"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 12,
+        "y": 8
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.2.2",
+      "targets": [
+        {
+          "format": "table",
+          "rawSql": "SET max_parallel_workers_per_gather = 0;\nWITH filtered AS (\n  SELECT fid.date_key, fid.transactions, di.parent_category_id\n  FROM dm.fact_item_daily fid\n  LEFT JOIN dm.dim_item di ON di.item_id = fid.item_id\n  WHERE $__timeFilter(fid.date_key)\n    AND COALESCE(di.parent_category_id::text, 'UNCATEGORIZED') ~ '${parent_category:regex}'\n)\nSELECT\n  MAX(filtered.date_key)::timestamp AS \"time\",\n  SUM(filtered.transactions) AS value\nFROM filtered;\n",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Транзакции",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "default": true,
+        "type": "grafana-postgresql-datasource",
+        "uid": "retail-postgres"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 18,
+        "y": 8
+      },
+      "id": 7,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "retail-postgres"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SET max_parallel_workers_per_gather = 0;\nWITH filtered AS (\n  SELECT fid.date_key, fid.views, fid.transactions, di.parent_category_id\n  FROM dm.fact_item_daily fid\n  LEFT JOIN dm.dim_item di ON di.item_id = fid.item_id\n  WHERE $__timeFilter(fid.date_key)\n    AND COALESCE(di.parent_category_id::text, 'UNCATEGORIZED') ~ 'UNCATEGORIZED'\n)\nSELECT\n  filtered.date_key::timestamp AS \"time\",\n  CASE WHEN SUM(filtered.views) = 0 THEN 0\n       ELSE (SUM(filtered.transactions)::numeric / NULLIF(SUM(filtered.views), 0)) * 100\n  END AS value\nFROM filtered\nGROUP BY filtered.date_key\nORDER BY 1;\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Конверсия, %",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "default": true,
+        "type": "grafana-postgresql-datasource",
+        "uid": "retail-postgres"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 60,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 12
+      },
+      "id": 8,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "retail-postgres"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SET max_parallel_workers_per_gather = 0;\nWITH base AS (\n  SELECT\n    fid.date_key,\n    SUM(fid.views) AS views,\n    SUM(fid.add_to_cart) AS add_to_cart,\n    SUM(fid.transactions) AS transactions\n  FROM dm.fact_item_daily fid\n  LEFT JOIN dm.dim_item di ON di.item_id = fid.item_id\n  WHERE $__timeFilter(fid.date_key)\n    AND COALESCE(di.parent_category_id::text, 'UNCATEGORIZED') ~ 'UNCATEGORIZED'\n  GROUP BY fid.date_key\n)\nSELECT\n  $__time(base.date_key),\n  stages.stage AS metric,\n  stages.value\nFROM base\nCROSS JOIN LATERAL (\n  VALUES\n    ('Просмотры', base.views),\n    ('Добавления в корзину', base.add_to_cart),\n    ('Транзакции', base.transactions)\n) AS stages(stage, value)\nORDER BY 1, 2;\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Динамика воронки",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "retail-postgres"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 20
+      },
+      "id": 9,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "11.2.2",
+      "targets": [
+        {
+          "format": "table",
+          "rawSql": "SET max_parallel_workers_per_gather = 0;\nWITH filtered AS (\n  SELECT\n    fid.item_id,\n    COALESCE(di.parent_category_id::text, 'UNCATEGORIZED') AS parent_category,\n    MAX(fid.date_key) AS max_date,\n    SUM(fid.views) AS views,\n    SUM(fid.add_to_cart) AS add_to_cart,\n    SUM(fid.transactions) AS transactions\n  FROM dm.fact_item_daily fid\n  LEFT JOIN dm.dim_item di ON di.item_id = fid.item_id\n  WHERE $__timeFilter(fid.date_key)\n    AND COALESCE(di.parent_category_id::text, 'UNCATEGORIZED') ~ '${parent_category:regex}'\n  GROUP BY fid.item_id, COALESCE(di.parent_category_id::text, 'UNCATEGORIZED')\n)\nSELECT\n  filtered.max_date::timestamp AS \"time\",\n  filtered.item_id,\n  filtered.parent_category,\n  filtered.views,\n  filtered.add_to_cart,\n  filtered.transactions,\n  CASE WHEN filtered.views = 0 THEN 0\n       ELSE filtered.transactions::numeric / filtered.views\n  END AS conversion_rate\nFROM filtered\nWHERE filtered.views > 0\nORDER BY filtered.transactions DESC\nLIMIT 10;\n",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Лидеры продаж",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "retail-postgres"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "max": 1,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 20
+      },
+      "id": 10,
+      "options": {
+        "displayMode": "basic",
+        "maxVizHeight": 300,
+        "minVizHeight": 16,
+        "minVizWidth": 8,
+        "namePlacement": "auto",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "pluginVersion": "11.2.2",
+      "targets": [
+        {
+          "format": "table",
+          "rawSql": "SET max_parallel_workers_per_gather = 0;\nWITH filtered AS (\n  SELECT\n    fid.item_id,\n    MAX(fid.date_key) AS max_date,\n    SUM(fid.views) AS views,\n    SUM(fid.transactions) AS transactions\n  FROM dm.fact_item_daily fid\n  LEFT JOIN dm.dim_item di ON di.item_id = fid.item_id\n  WHERE $__timeFilter(fid.date_key)\n    AND COALESCE(di.parent_category_id::text, 'UNCATEGORIZED') ~ '${parent_category:regex}'\n  GROUP BY fid.item_id\n)\nSELECT\n  filtered.max_date::timestamp AS \"time\",\n  filtered.item_id::text AS metric,\n  CASE WHEN filtered.views = 0 THEN 0\n       ELSE filtered.transactions::numeric / filtered.views\n  END AS value\nFROM filtered\nWHERE filtered.views > 0\nORDER BY value ASC\nLIMIT 10;\n",
+          "refId": "A",
+          "rawQuery": true
+        }
+      ],
+      "title": "Аутсайдеры по конверсии",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "default": true,
+        "type": "grafana-postgresql-datasource",
+        "uid": "retail-postgres"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 30
+      },
+      "id": 11,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "retail-postgres"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "WITH visitor_counts AS (\n  SELECT\n    date_key,\n    SUM(unique_visitors) FILTER (WHERE event_type ~ 'addtocart') AS visitors\n  FROM dm.fact_daily_events\n  WHERE $__timeFilter(date_key)\n  GROUP BY date_key\n), item_counts AS (\n  SELECT\n    date_key,\n    COUNT(DISTINCT item_id) FILTER (WHERE views > 0) AS touched_items\n  FROM dm.fact_item_daily\n  WHERE $__timeFilter(date_key)\n  GROUP BY date_key\n)\nSELECT\n  $__time(vc.date_key),\n  'Уникальные посетители' AS metric,\n  vc.visitors AS value\nFROM visitor_counts vc\nUNION ALL\nSELECT\n  $__time(ic.date_key),\n  'Уникальные товары' AS metric,\n  ic.touched_items AS value\nFROM item_counts ic\nORDER BY 1, 2;\n",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Посетители и охват товаров",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 39,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": ".*",
+        "current": {
+          "selected": false,
+          "text": [
+            "view"
+          ],
+          "value": [
+            "view"
+          ]
+        },
+        "datasource": {
+          "type": "postgres",
+          "uid": "retail-postgres"
+        },
+        "definition": "SELECT DISTINCT event_type FROM dm.fact_daily_events ORDER BY 1",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Event Type",
+        "multi": true,
+        "name": "event_type",
+        "options": [],
+        "query": "SELECT DISTINCT event_type FROM dm.fact_daily_events ORDER BY 1",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "selected": false,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "postgres",
+          "uid": "retail-postgres"
+        },
+        "definition": "SELECT DISTINCT COALESCE(parent_category_id::text, 'UNCATEGORIZED') FROM dm.dim_item ORDER BY 1",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Parent Category",
+        "multi": true,
+        "name": "parent_category",
+        "options": [],
+        "query": "SELECT DISTINCT COALESCE(parent_category_id::text, 'UNCATEGORIZED') FROM dm.dim_item ORDER BY 1",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "2015-05-01T00:00:00Z",
+    "to": "2015-10-01T00:00:00Z"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "",
+  "title": "Аналитическая панель",
+  "uid": "df703aqtc3rwgc",
+  "version": 3,
+  "weekStart": ""
+}
